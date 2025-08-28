@@ -1,35 +1,68 @@
-# 👋 Olá! Eu sou Fábio Magnus de Deus
+### main.py
+```python
+import json
+import os
 
-🎓 Estudante de *Análise e Desenvolvimento de Sistemas (ADS)*  
-💻 Aprendendo: *Python, SQL, HTML, CSS, Git/GitHub*  
-🔎 Interesses: desenvolvimento web, lógica de programação e bancos de dados
+ARQUIVO = 'usuarios.json'
 
-🧭 Objetivo
-Construir meu portfólio com projetos simples e objetivos, mostrando minha evolução na área de TI.
+def carregar():
+    if not os.path.exists(ARQUIVO):
+        return []
+    try:
+        with open(ARQUIVO, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
 
-📫 Contato
-- Email: fabiomagnusdedeus@gmail.com  
-- LinkedIn: (adicione seu link aqui)
-- GitHub: (este perfil)
+def salvar(dados):
+    with open(ARQUIVO, 'w', encoding='utf-8') as f:
+        json.dump(dados, f, ensure_ascii=False, indent=2)
 
-🧱 Próximos passos
-- Publicar 1–2 projetos introdutórios (CLI e Web)
-- Praticar SQL com exercícios e mini-projetos
-- Documentar cada projeto com um bom README
+def cadastrar(dados):
+    print('\n--- Novo cadastro ---')
+    nome = input('Nome: ').strip()
+    email = input('Email: ').strip()
+    telefone = input('Telefone (opcional): ').strip()
+    dados.append({'nome': nome, 'email': email, 'telefone': telefone})
+    salvar(dados)
+    print('✅ Usuário cadastrado!')
 
-> Obrigado por visitar! ✨## Hi there 👋
+def listar(dados):
+    print('\n--- Lista de usuários ---')
+    if not dados:
+        print('Nenhum usuário cadastrado.')
+        return
+    for i, u in enumerate(dados, 1):
+        tel = u.get('telefone', '') or '—'
+        print(f'{i}. {u["nome"]} | {u["email"]} | {tel}')
 
-<!--
-**fabiomagnusdedeus-prog/fabiomagnusdedeus-prog** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+def buscar(dados):
+    print('\n--- Buscar por email ---')
+    email = input('Digite o email: ').strip().lower()
+    achados = [u for u in dados if u['email'].lower() == email]
+    if achados:
+        u = achados[0]
+        tel = u.get('telefone', '') or '—'
+        print(f'Encontrado: {u["nome"]} | {u["email"]} | {tel}')
+    else:
+        print('Nenhum usuário encontrado com esse email.')
 
-Here are some ideas to get you started:
+def menu():
+    dados = carregar()
+    while True:
+        print('\n1) Cadastrar  2) Listar  3) Buscar por email  0) Sair')
+        op = input('Escolha: ').strip()
+        if op == '1':
+            cadastrar(dados)
+        elif op == '2':
+            listar(dados)
+        elif op == '3':
+            buscar(dados)
+        elif op == '0':
+            print('Até mais!')
+            break
+        else:
+            print('Opção inválida.')
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+if _name_ == '_main_':
+    menu()
