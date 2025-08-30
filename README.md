@@ -1,68 +1,20 @@
-### main.py
-```python
-import json
-import os
+# Sistema de Cadastro Simples
 
-ARQUIVO = 'usuarios.json'
+## 🎯 Objetivo
+Um aplicativo de linha de comando (CLI) para **cadastrar, listar e buscar usuários** salvando os dados em um arquivo `.json`.
 
-def carregar():
-    if not os.path.exists(ARQUIVO):
-        return []
-    try:
-        with open(ARQUIVO, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        return []
+## 🛠 Tecnologias
+- Python 3.x
+- Git/GitHub
 
-def salvar(dados):
-    with open(ARQUIVO, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, ensure_ascii=False, indent=2)
+## 📌 Funcionalidades
+- Cadastrar usuário (nome, email, telefone)
+- Listar usuários
+- Buscar por email
+- Persistência em `usuarios.json`
 
-def cadastrar(dados):
-    print('\n--- Novo cadastro ---')
-    nome = input('Nome: ').strip()
-    email = input('Email: ').strip()
-    telefone = input('Telefone (opcional): ').strip()
-    dados.append({'nome': nome, 'email': email, 'telefone': telefone})
-    salvar(dados)
-    print('✅ Usuário cadastrado!')
-
-def listar(dados):
-    print('\n--- Lista de usuários ---')
-    if not dados:
-        print('Nenhum usuário cadastrado.')
-        return
-    for i, u in enumerate(dados, 1):
-        tel = u.get('telefone', '') or '—'
-        print(f'{i}. {u["nome"]} | {u["email"]} | {tel}')
-
-def buscar(dados):
-    print('\n--- Buscar por email ---')
-    email = input('Digite o email: ').strip().lower()
-    achados = [u for u in dados if u['email'].lower() == email]
-    if achados:
-        u = achados[0]
-        tel = u.get('telefone', '') or '—'
-        print(f'Encontrado: {u["nome"]} | {u["email"]} | {tel}')
-    else:
-        print('Nenhum usuário encontrado com esse email.')
-
-def menu():
-    dados = carregar()
-    while True:
-        print('\n1) Cadastrar  2) Listar  3) Buscar por email  0) Sair')
-        op = input('Escolha: ').strip()
-        if op == '1':
-            cadastrar(dados)
-        elif op == '2':
-            listar(dados)
-        elif op == '3':
-            buscar(dados)
-        elif op == '0':
-            print('Até mais!')
-            break
-        else:
-            print('Opção inválida.')
-
-if _name_ == '_main_':
-    menu()
+## 🚀 Como executar
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/SEU-USUARIO/sistema-cadastro.git
+   cd sistema-cadastro
